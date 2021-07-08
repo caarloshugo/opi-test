@@ -1,0 +1,20 @@
+service: dragonModel
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: python3.8
+  lambdaHashingVersion: 20201221
+  region: us-west-2
+
+
+functions:
+  dragonModel:
+    handler: handler.dragonModel
+    name: dragonModel
+    timeout: 1
+    events:
+    - http:
+          path: model
+          method: get
+          cors: true
