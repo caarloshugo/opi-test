@@ -161,7 +161,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/dragonModel/dev/1625780501852-2021-07-08T21:41:41.852Z/dragonModel.zip"
+          "S3Key": "serverless/dragonModel/dev/1625785836463-2021-07-08T23:10:36.463Z/dragonModel.zip"
         },
         "Handler": "handler.dragonModel",
         "Runtime": "python3.8",
@@ -179,14 +179,14 @@
         "DragonModelLogGroup"
       ]
     },
-    "DragonModelLambdaVersionqYkg7yvtAenSCpqzlKUNtdBUWGtSmY2OmhACklz8wM": {
+    "DragonModelLambdaVersionkOMzDVSmIA8ZSkGtp6VTedpCCfEnmsorAabpxUSrw": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "DragonModelLambdaFunction"
         },
-        "CodeSha256": "JgvjphNiG1xfgn1HLIDPwd6Wxw/nxabZ29wj1xd65sw="
+        "CodeSha256": "AvHncGMsNVHYyyMORkNoZvSVzKeMQkGSA4mF5tcELmE="
       }
     },
     "ApiGatewayRestApi": {
@@ -272,7 +272,7 @@
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         },
-        "ApiKeyRequired": false,
+        "ApiKeyRequired": true,
         "AuthorizationType": "NONE",
         "Integration": {
           "IntegrationHttpMethod": "POST",
@@ -307,7 +307,7 @@
         "DragonModelLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1625780501068": {
+    "ApiGatewayDeployment1625785835690": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -319,6 +319,58 @@
         "ApiGatewayMethodModelOptions",
         "ApiGatewayMethodModelGet"
       ]
+    },
+    "ApiGatewayApiKey1": {
+      "Type": "AWS::ApiGateway::ApiKey",
+      "Properties": {
+        "Enabled": true,
+        "Name": "APIKEY-DRAGON-TEST",
+        "StageKeys": [
+          {
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "StageName": "dev"
+          }
+        ]
+      },
+      "DependsOn": "ApiGatewayDeployment1625785835690"
+    },
+    "ApiGatewayUsagePlan": {
+      "Type": "AWS::ApiGateway::UsagePlan",
+      "DependsOn": "ApiGatewayDeployment1625785835690",
+      "Properties": {
+        "ApiStages": [
+          {
+            "ApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "Stage": "dev"
+          }
+        ],
+        "Description": "Usage plan for dragonModel dev stage",
+        "UsagePlanName": "dragonModel-dev",
+        "Quota": {
+          "Limit": 86400000,
+          "Period": "DAY"
+        },
+        "Throttle": {
+          "BurstLimit": 1000,
+          "RateLimit": 1000
+        }
+      }
+    },
+    "ApiGatewayUsagePlanKey1": {
+      "Type": "AWS::ApiGateway::UsagePlanKey",
+      "Properties": {
+        "KeyId": {
+          "Ref": "ApiGatewayApiKey1"
+        },
+        "KeyType": "API_KEY",
+        "UsagePlanId": {
+          "Ref": "ApiGatewayUsagePlan"
+        }
+      }
     },
     "DragonModelLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
@@ -370,7 +422,7 @@
     "DragonModelLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "DragonModelLambdaVersionqYkg7yvtAenSCpqzlKUNtdBUWGtSmY2OmhACklz8wM"
+        "Ref": "DragonModelLambdaVersionkOMzDVSmIA8ZSkGtp6VTedpCCfEnmsorAabpxUSrw"
       },
       "Export": {
         "Name": "sls-dragonModel-dev-DragonModelLambdaFunctionQualifiedArn"

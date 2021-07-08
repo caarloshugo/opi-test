@@ -1,20 +1,29 @@
 service: dragonModel
 frameworkVersion: '2'
-
 provider:
   name: aws
+  apiGateway:
+    apiKeys:
+      - APIKEY-DRAGON-TEST
+  usagePlan:
+    quota:
+      limit: 86400000
+      period: DAY
+    throttle:
+      burstLimit: 1000
+      rateLimit: 1000
   runtime: python3.8
   lambdaHashingVersion: 20201221
   region: us-west-2
-
-
+  
 functions:
   dragonModel:
     handler: handler.dragonModel
     name: dragonModel
     timeout: 1
     events:
-    - http:
+      - http:
           path: model
           method: get
           cors: true
+          private: true
