@@ -62,7 +62,7 @@ npm install -g serverless
 # Deploy a AWS
 serverless deploy --aws-profile [nombre del perfil]
 
-#Para mandar a llamar a la API
+#Para mandar a llamar a la API de prueba con curl via GET. api-key: LJN3omdPaQ6dkD024Ua2j5qPmnOuFcos7v9uDu6c, parametros: number1 y number2
 curl --location --request GET 'https://gvs9dx2fai.execute-api.us-west-2.amazonaws.com/dev/model?number1=2&number2=3' \
 --header 'x-api-key: LJN3omdPaQ6dkD024Ua2j5qPmnOuFcos7v9uDu6c'
 
@@ -77,6 +77,11 @@ aws apigateway create-usage-plan --name "Dragon plan dev - test" --description "
 aws apigateway create-usage-plan-key --usage-plan-id [usage-plan-id] --key-type "API_KEY" --key-id [key-id]  --profile [profile]
 
 ```
+
+## TO-DO
+
+- Crear la función Lambda del autorizador con JWT
+
 
 ## Autor
 
