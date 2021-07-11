@@ -3,6 +3,7 @@
 ## Descripción
 
 Este proyecto genera una API a traves de una función Lambda y el API Gateway de AWS, esta API es para consumir el modelo predictivo del proyecto Dragon
+También genera una función lambda para el autorizador que para motivos del demo solo responde con el token "allow"
 
 ## Requisitos
 
