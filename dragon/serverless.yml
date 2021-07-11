@@ -29,3 +29,9 @@ functions:
           method: get
           cors: true
           private: true
+          authorizer:
+            name: DragonAuthorizer
+            arn: [your-arn-lambda-authorizer]
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.authorizationToken
+            type: token

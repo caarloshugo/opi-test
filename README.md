@@ -54,19 +54,34 @@ Framework que permite crear funciones lambda y poderlas subir a AWS
 ```bash
 # Instalar dependencia
 npm install -g serverless
+
+#Hacer estte paso nuevamente desde la carpeta de authorizer "cd ../authorizer"
 ```
 
 ## Scripts
 
 ```bash
-# Deploy a AWS
+#Primero se tiene que hacer deploy del autorizador
+cd authorizer
 serverless deploy --aws-profile [nombre del perfil]
 
+#Esto va generar una función lambda en AWS. Vamos a obtener el ARN de esta función y remplazarlo en el serverless.yml por [your-arn-lambda-authorizer] de la función lambda del modelo para ligar el autorizador
+
+# Deploy del modelo a AWS
+serverless deploy --aws-profile [nombre del perfil]
+```
+
+## Llamar a la API
+```bash
 #Para mandar a llamar a la API de prueba con curl via GET. api-key: LJN3omdPaQ6dkD024Ua2j5qPmnOuFcos7v9uDu6c, parametros: number1 y number2
 curl --location --request GET 'https://gvs9dx2fai.execute-api.us-west-2.amazonaws.com/dev/model?number1=2&number2=3' \
---header 'x-api-key: LJN3omdPaQ6dkD024Ua2j5qPmnOuFcos7v9uDu6c'
+--header 'x-api-key: LJN3omdPaQ6dkD024Ua2j5qPmnOuFcos7v9uDu6c' \
+--header 'authorizationToken: allow'
+```
 
-#comandos de referencia
+##Comandos de referencia
+
+```bash
 #Crear api key
 aws apigateway create-api-key --name 'Dev API Key' --description 'Used for development' --enabled --stage-keys restApiId='[restApiId]',stageName='dev' --profile [profile]
 
@@ -75,13 +90,7 @@ aws apigateway create-usage-plan --name "Dragon plan dev - test" --description "
 
 #Ligar api key con usage plan
 aws apigateway create-usage-plan-key --usage-plan-id [usage-plan-id] --key-type "API_KEY" --key-id [key-id]  --profile [profile]
-
 ```
-
-## TO-DO
-
-- Crear la función Lambda del autorizador con JWT
-
 
 ## Autor
 
